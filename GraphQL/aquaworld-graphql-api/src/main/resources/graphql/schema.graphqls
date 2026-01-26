@@ -1,0 +1,356 @@
+"""
+AquaWorld GraphQL Schema
+Pet Store API for Premium Guppies and Aquatic Accessories
+"""
+
+type Query {
+    """Get all products with pagination"""
+    products(limit: Int, offset: Int): [Product!]!
+    
+    """Get a single product by ID"""
+    product(id: ID!): Product
+    
+    """Search products by name (case-insensitive)"""
+    searchProducts(name: String!): [Product!]!
+    
+    """Get products by category"""
+    productsByCategory(category: String!): [Product!]!
+    
+    """Get all available products (in stock)"""
+    availableProducts: [Product!]!
+    
+    """Get current authenticated user's profile"""
+    me: User
+    
+    """Get user by username"""
+    user(username: String!): User
+    
+    """Get current user's orders (requires authentication)"""
+    orders(limit: Int, offset: Int): [Order!]!
+    
+    """Get a specific order by ID (requires authentication)"""
+    order(id: ID!): Order
+    
+    """Get order by order number"""
+    orderByNumber(orderNumber: String!): Order
+    
+    """Get payment by ID (requires authentication)"""
+    payment(id: ID!): Payment
+    
+    """Get payment by order ID (requires authentication)"""
+    paymentByOrder(orderId: ID!): Payment
+}
+
+type Mutation {
+    """Register a new user"""
+    register(input: RegisterInput!): AuthPayload!
+    
+    """Login user and get JWT token"""
+    login(input: LoginInput!): AuthPayload!
+    
+    """Create a new product (Admin only)"""
+    createProduct(input: CreateProductInput!): Product!
+    
+    """Update existing product (Admin only)"""
+    updateProduct(id: ID!, input: UpdateProductInput!): Product!
+    
+    """Delete product (Admin only)"""
+    deleteProduct(id: ID!): Boolean!
+    
+    """Create a new order (requires authentication)"""
+    createOrder(input: CreateOrderInput!): Order!
+    
+    """Update order status (requires authentication)"""
+    updateOrderStatus(id: ID!, status: String!): Order!
+    
+    """Cancel an order (requires authentication)"""
+    cancelOrder(id: ID!): Order!
+    
+    """Delete order (requires authentication)"""
+    deleteOrder(id: ID!): Boolean!
+    
+    """Process payment for an order (requires authentication)"""
+    processPayment(input: PaymentInput!): Payment!
+    
+    """Refund a payment (requires authentication)"""
+    refundPayment(id: ID!): Payment!
+    
+    """Update user profile (requires authentication)"""
+    updateProfile(input: UpdateUserInput!): User!
+}
+
+"""User type - represents a customer or admin"""
+type User {
+    """Unique identifier"""
+    id: ID!
+    
+    """Username for login"""
+    username: String!
+    
+    """Email address"""
+    email: String!
+    
+    """First name"""
+    firstName: String!
+    
+    """Last name"""
+    lastName: String!
+    
+    """Phone number"""
+    phone: String
+    
+    """Delivery address"""
+    address: String
+    
+    """User role (CUSTOMER, ADMIN, VENDOR)"""
+    role: String!
+    
+    """Account creation timestamp"""
+    createdAt: String!
+    
+    """Last login timestamp"""
+    lastLogin: String
+    
+    """Account active status"""
+    active: Boolean!
+}
+
+"""Authentication payload returned after login"""
+type AuthPayload {
+    """User ID"""
+    id: ID!
+    
+    """Username"""
+    username: String!
+    
+    """Email"""
+    email: String!
+    
+    """JWT authentication token"""
+    token: String!
+    
+    """Token type (usually 'Bearer')"""
+    tokenType: String!
+    
+    """Token expiration time in seconds"""
+    expiresIn: Int!
+    
+    """Login timestamp"""
+    loginAt: String!
+}
+
+"""Product type - represents a guppy or aquatic item"""
+type Product {
+    """Unique identifier"""
+    id: ID!
+    
+    """Product name"""
+    name: String!
+    
+    """Product category (guppies, fish_food, equipment, decorations, medicines)"""
+    category: String!
+    
+    """Product description"""
+    description: String!
+    
+    """Price in USD"""
+    price: Float!
+    
+    """Available stock quantity"""
+    stock: Int!
+    
+    """Product image URL"""
+    imageUrl: String
+    
+    """Creation timestamp"""
+    createdAt: String!
+    
+    """Last update timestamp"""
+    updatedAt: String
+}
+
+"""Order type - represents a customer order"""
+type Order {
+    """Unique identifier"""
+    id: ID!
+    
+    """Unique order number (e.g., ORD-20250119-001)"""
+    orderNumber: String!
+    
+    """Customer who placed the order"""
+    user: User!
+    
+    """Items in the order"""
+    orderItems: [OrderItem!]!
+    
+    """Total order price"""
+    totalPrice: Float!
+    
+    """Order status (PENDING, CONFIRMED, PROCESSING, SHIPPED, DELIVERED, CANCELLED)"""
+    status: String!
+    
+    """Creation timestamp"""
+    createdAt: String!
+    
+    """Last update timestamp"""
+    updatedAt: String
+}
+
+"""OrderItem type - represents a single line item in an order"""
+type OrderItem {
+    """Unique identifier"""
+    id: ID!
+    
+    """Product in this order item"""
+    product: Product!
+    
+    """Quantity ordered"""
+    quantity: Int!
+    
+    """Price per unit at time of order"""
+    price: Float!
+}
+
+"""Payment type - represents a payment transaction"""
+type Payment {
+    """Unique identifier"""
+    id: ID!
+    
+    """Associated order"""
+    order: Order!
+    
+    """Payment amount in USD"""
+    amount: Float!
+    
+    """Payment status (PENDING, SUCCESS, FAILED, REFUNDED)"""
+    status: String!
+    
+    """Payment method (CREDIT_CARD, DEBIT_CARD, DIGITAL_WALLET, BANK_TRANSFER)"""
+    paymentMethod: String!
+    
+    """Unique transaction ID"""
+    transactionId: String!
+    
+    """Creation timestamp"""
+    createdAt: String!
+    
+    """Last update timestamp"""
+    updatedAt: String
+}
+
+"""Input type for user registration"""
+input RegisterInput {
+    """Username (3-20 characters)"""
+    username: String!
+    
+    """Email address"""
+    email: String!
+    
+    """Password (minimum 8 characters)"""
+    password: String!
+    
+    """First name"""
+    firstName: String!
+    
+    """Last name"""
+    lastName: String!
+    
+    """Phone number (optional)"""
+    phone: String
+}
+
+"""Input type for user login"""
+input LoginInput {
+    """Username"""
+    username: String!
+    
+    """Password"""
+    password: String!
+}
+
+"""Input type for creating a product"""
+input CreateProductInput {
+    """Product name"""
+    name: String!
+    
+    """Product category"""
+    category: String!
+    
+    """Product description"""
+    description: String!
+    
+    """Product price"""
+    price: Float!
+    
+    """Stock quantity"""
+    stock: Int!
+    
+    """Product image URL (optional)"""
+    imageUrl: String
+}
+
+"""Input type for updating a product"""
+input UpdateProductInput {
+    """Product name (optional)"""
+    name: String
+    
+    """Product category (optional)"""
+    category: String
+    
+    """Product description (optional)"""
+    description: String
+    
+    """Product price (optional)"""
+    price: Float
+    
+    """Stock quantity (optional)"""
+    stock: Int
+    
+    """Product image URL (optional)"""
+    imageUrl: String
+}
+
+"""Input type for creating an order"""
+input CreateOrderInput {
+    """Items to add to the order"""
+    orderItems: [OrderItemInput!]!
+}
+
+"""Input type for order item in CreateOrderInput"""
+input OrderItemInput {
+    """Product ID"""
+    productId: ID!
+    
+    """Quantity to order"""
+    quantity: Int!
+}
+
+"""Input type for processing a payment"""
+input PaymentInput {
+    """Order ID"""
+    orderId: ID!
+    
+    """Payment amount"""
+    amount: Float!
+    
+    """Payment method"""
+    paymentMethod: String!
+}
+
+"""Input type for updating user profile"""
+input UpdateUserInput {
+    """First name (optional)"""
+    firstName: String
+    
+    """Last name (optional)"""
+    lastName: String
+    
+    """Phone number (optional)"""
+    phone: String
+    
+    """Address (optional)"""
+    address: String
+}
+
+"""Scalar type for custom date/time handling"""
+scalar DateTime

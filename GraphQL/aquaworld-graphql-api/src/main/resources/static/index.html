@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>GraphiQL - AquaWorld GraphQL API</title>
+    <meta name="robots" content="noindex" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/graphiql@3.1.1/graphiql.min.css" />
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            width: 100%;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        }
+        #graphiql {
+            height: 100vh;
+        }
+    </style>
+    <script
+        crossorigin
+        src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"
+    ></script>
+    <script
+        crossorigin
+        src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"
+    ></script>
+</head>
+<body>
+    <div id="graphiql">Loading...</div>
+    <script
+        src="https://cdn.jsdelivr.net/npm/graphiql@3.1.1/graphiql.min.js"
+        type="application/javascript"
+    ></script>
+    <script>
+        const fetcher = GraphiQL.createFetcher({
+            url: '/aquaworld/graphql',
+        });
+
+        ReactDOM.createRoot(document.getElementById('graphiql')).render(
+            React.createElement(GraphiQL, {
+                fetcher,
+                title: 'AquaWorld GraphQL API',
+                defaultVariableEditorOpen: true,
+                defaultSecondaryEditorOpen: true,
+            }),
+        );
+    </script>
+</body>
+</html>
