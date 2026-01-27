@@ -7,12 +7,12 @@ I have successfully built a **complete, production-ready GraphQL API** for AquaW
 ## 📦 What You Got
 
 ### Core Implementation
-✅ **40+ Java files** organized in proper layers
-✅ **14 GraphQL Queries** for reading data
-✅ **12 GraphQL Mutations** for writing data  
-✅ **Full JWT Authentication** with role-based authorization
-✅ **Complete GraphQL Schema** with strong typing
-✅ **In-memory Data Storage** (ConcurrentHashMap)
+✅ **40+ Java files** organized in proper layers<br>
+✅ **14 GraphQL Queries** for reading data<br>
+✅ **12 GraphQL Mutations** for writing data<br>
+✅ **Full JWT Authentication** with role-based authorization<br>
+✅ **Complete GraphQL Schema** with strong typing<br>
+✅ **In-memory Data Storage** (ConcurrentHashMap)<br>
 ✅ **6 comprehensive documentation files**
 
 ### Technology Stack
