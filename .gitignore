@@ -24,3 +24,9 @@ hs_err_pid*
 replay_pid*
 /REST/aquaworld-api/.idea
 /GraphQL/aquaworld-graphql-api/target
+/GraphQL/aquaworld-graphql-api/.idea
+/gRPC/aquaworld-grpc-api/.idea
+/gRPC/aquaworld-grpc-api/target
+REST/.DS_Store
+.DS_Store
+.DS_Store
