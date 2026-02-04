@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package com.aquaworld.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.aquaworld.grpc";
+option java_outer_classname = "CommonProto";
+
+message Empty {}
+
+message ApiResponse {
+  bool success = 1;
+  string message = 2;
+  string error_code = 3;
+}
+
+message PageInfo {
+  int32 page = 1;
+  int32 page_size = 2;
+  int32 total_items = 3;
+  int32 total_pages = 4;
+}

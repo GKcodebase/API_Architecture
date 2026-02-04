@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package com.aquaworld.grpc.product;
+
+option java_multiple_files = true;
+option java_package = "com.aquaworld.grpc.product";
+option java_outer_classname = "ProductServiceProto";
+
+import "common.proto";
+
+message Product {
+  string product_id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  int32 stock_quantity = 5;
+  string category = 6;
+  repeated string tags = 7;
+  string image_url = 8;
+  int64 created_at = 9;
+}
+
+message ProductRequest {
+  string product_id = 1;
+}
+
+message GetProductRequest {
+  string product_id = 1;
+}
+
+message DeleteProductRequest {
+  string product_id = 1;
+}
+
+message StreamProductsRequest {
+}
+
+message ProductListRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string category = 3;
+  string search_query = 4;
+}
+
+message ProductListResponse {
+  repeated Product products = 1;
+  com.aquaworld.grpc.PageInfo page_info = 2;
+}
+
+message CreateProductRequest {
+  string name = 1;
+  string description = 2;
+  double price = 3;
+  int32 stock_quantity = 4;
+  string category = 5;
+  repeated string tags = 6;
+  string image_url = 7;
+}
+
+message UpdateProductRequest {
+  string product_id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  int32 stock_quantity = 5;
+  string category = 6;
+  repeated string tags = 7;
+  string image_url = 8;
+}
+
+message UpdateStockRequest {
+  string product_id = 1;
+  int32 quantity_change = 2;
+}
+
+service ProductService {
+  rpc GetProduct(ProductRequest) returns (Product);
+  rpc ListProducts(ProductListRequest) returns (ProductListResponse);
+  rpc CreateProduct(CreateProductRequest) returns (Product);
+  rpc UpdateProduct(UpdateProductRequest) returns (Product);
+  rpc UpdateStock(UpdateStockRequest) returns (Product);
+  rpc DeleteProduct(ProductRequest) returns (com.aquaworld.grpc.ApiResponse);
+  rpc StreamProducts(com.aquaworld.grpc.Empty) returns (stream Product);
+}
